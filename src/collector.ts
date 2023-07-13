@@ -1,4 +1,4 @@
-import { Position } from "./world";
+import { Position } from "./location";
 
 export interface Collector {
   position: Position;

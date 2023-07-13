@@ -1,6 +1,6 @@
-import { Position } from "./world";
+import { Position } from "./location";
 
-enum Species {
+export enum Species {
   Bird,
   Butterfly,
   Shark,
@@ -11,7 +11,7 @@ enum Species {
   Monkey,
 }
 
-enum Family {
+export enum Family {
   Flyer,
   Swimmer,
   Runner,
