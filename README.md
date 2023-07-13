@@ -2,6 +2,16 @@
 
 This repo contains some demo code for a totally fictional creature collecting game called Pouch Creatures, which definitely bears absolutely no resemblance to any real game whatsoever.
 
+## Set-up and running the tests
+
+If using [asdf](https://github.com/asdf-vm/asdf), run `asdf install` to install the runtime versions. Then run `yarn` to install the project dependencies.
+
+If you're not using `asdf`, I highly recommend it.
+
+Otherwise, install Node and Yarn as specified in `.tool-versions`, and then install the `yarn` dependencies.
+
+Once the dependencies are installed, you can run the tests with `yarn test`.
+
 ## Notes on each step of this project
 
 ### 1 - Define some domain classes to model this application.
