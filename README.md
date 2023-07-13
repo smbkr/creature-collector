@@ -22,7 +22,7 @@ Reading ahead, and based on my (totally imagined) knowledge of a Gameboy game (t
 
 At this stage, since there's no logic, I've not yet added any tests.
 
-### 2 - Gotta collect ‘em all!
+### 2 - Gotta collect ‘em all!
 
 To implement the first part, determining if a creature is nearby, I added a function to `world.ts` which takes an instance of `World` and a `Collector` and returns any creature within 8 units. This distance was completely arbitrary. It's implemented in a functional way, which is sufficient for this simple demo (and easy to test), but in a real game you'd _probably_ want to use an object where `creaturesNearCollector` is a method, as game worlds and entities are inherently stateful.
 
