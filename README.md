@@ -30,6 +30,8 @@ In a real game, I imagine the world would exist on a 2d grid, divided into cells
 
 I put the function to deremine which creatures are near the collector into the world module, as it feels like this is where it belongs, as the world "owns" the creatures and collectors. The code to detemine if a creature is within range lives in `location.ts`. This is probably not strictly necessary as it's only a few lines, but for the purposes of the demo I've moved it there to demonstrate separation of concerns.
 
+TODO: A Collector can catch a random nearby Creature and add them to his/her collection. Write code to allow this.
+
 ### 3 - Multi-player
 
 There are probably multiple technical and product decisions we could make to address the questions posed here, but let's answer things in the order they're asked:
@@ -98,3 +100,15 @@ Downsides to this method:
 - The client has to poll (or subscribe on a socket etc) which is more expensive on the client-side
 - Latency in the queue, due to a large number of requests, or a network outage etc could lead to user frustration
 - Complexity and lots of "moving parts" mean debugging is harder - we'd want to think about trace IDs etc for messages to help debug
+
+### 4 - Be the very best!
+
+For this step, I added a new module `battle.ts` to house the logic for a battle.
+
+The implementation uses a public `battle` function, which randomly chooses who gets first turn, then uses a recursive function `battleTurn`, which subtracts the attacker's CP from the defender's HP, then calls itself with the attacker/defender reversed until teh defender has 0 (or less) HP.
+
+I considered adding a test for the random first move, but it felt a little bit too close to "don't test what you don't own". If a test is desired for this, one could use a jest mock to stub the `Math.random()` function to return some fixed value and assert it was called, but this is a bit of an implementation leak - we should be free to change the implementation without breaking our tests. You could also test that creature A always wins, for example, and fix the output of `Math.random()` again, but this is prone to false-positives.
+
+I've encapsulated the super-effectiveness logic in a method on the `Creature`, which I refactored from a simple interface to a class, so that it can house this logic. This is maybe overkill for a codebase this small, but it serves as an example for the purposes of the test.
+
+The special case of the amphibian has been added to the super-effectiveness table along with all the other family pairings, which is acceptable with such a small set of families, however in a "real world" scenario where there could be many more families with no upper bound, you may want a special case method to handle this instead, so the list doesn't grow to an unmanagable size.
