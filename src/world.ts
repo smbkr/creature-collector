@@ -2,16 +2,18 @@ import { Collector } from "./collector";
 import { Creature } from "./creature";
 import { isNearby } from "./location";
 
-export interface World {
-  creatures: Creature[];
-  collectors: Collector[];
-}
-
-export function creaturesNearCollector(
-  world: World,
+export function collect(
+  creatures: Creature[],
   collector: Collector
-): Creature[] {
-  return world.creatures.filter((creature) =>
+): Collector {
+  const nearbyCreatures = creatures.filter((creature) =>
     isNearby(creature.position, collector.position)
   );
+
+  if (nearbyCreatures.length > 0) {
+    collector.creatures.push(
+      nearbyCreatures.sort(() => Math.random() - 0.5)[0]
+    );
+  }
+  return collector;
 }

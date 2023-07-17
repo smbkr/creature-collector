@@ -24,13 +24,15 @@ At this stage, since there's no logic, I've not yet added any tests.
 
 ### 2 - Gotta collect ‘em all!
 
-To implement the first part, determining if a creature is nearby, I added a function to `world.ts` which takes an instance of `World` and a `Collector` and returns any creature within 8 units. This distance was completely arbitrary. It's implemented in a functional way, which is sufficient for this simple demo (and easy to test), but in a real game you'd _probably_ want to use an object where `creaturesNearCollector` is a method, as game worlds and entities are inherently stateful.
+To implement collection, I've extended my `Collector` model to have a list of `creatures` that the collector owns.
 
-In a real game, I imagine the world would exist on a 2d grid, divided into cells, with some max bound, and the catchability distance would be some number smaller than the total size of the world. Another arbitrary decision, but I decided the positions can only be positive integers - the bottom left corner of the map would always be `0, 0`, no matter how large the world map grows.
+I added a function `collect` to `world.ts`, which first filters the list of creatures in the world (passed as the first argument) to find those which are near the player, defined as within 8 units. This is based on the arbitrary decision that the game world is a 2d grid, with x/y coordinates which can only be positive integers.
 
-I put the function to deremine which creatures are near the collector into the world module, as it feels like this is where it belongs, as the world "owns" the creatures and collectors. The code to detemine if a creature is within range lives in `location.ts`. This is probably not strictly necessary as it's only a few lines, but for the purposes of the demo I've moved it there to demonstrate separation of concerns.
+Secondly, it shuffles the list of creatures which are nearby, and then picks the first creature and adds it to the collection.
 
-TODO: A Collector can catch a random nearby Creature and add them to his/her collection. Write code to allow this.
+I did some refactoring, removing the `World` interface as it wasn't really necessary to achieve any of this, and I'm sticking with the YAGNI principle while working on this.
+
+The code to determine if a creature is near the player lives in `location.ts`, which may be a bit overkill/gold-plating for such a simple use case, but serves as an example of encapsulation for the purposes of the test.
 
 ### 3 - Multi-player
 
@@ -47,7 +49,7 @@ There are probably multiple technical and product decisions we could make to add
 
 > How can we avoid this situation? Does your program handle this elegantly? If not, how can you change it to allow a Creature to be caught by multiple people? What are the ramifications of allowing that?
 
-The first question raised here is what exactly we mean by "avoid this situation" - do we want to avoid the player feeling sad? Or do we want to prevent the player getting into a situation where they might initiate a catch that is not guaranteed to succeed?
+The first question raised here is what exactly we mean by "avoid this situation"?Do we want to avoid the player feeling sad? Or do we want to prevent the player getting into a situation where they might initiate a catch that is not guaranteed to succeed?
 
 If we want to address the former, there are some product-led decisions we could make to prevent sadness in the player, the most immediately obvious of which is to allow multiple players to catch the same creature.
 
