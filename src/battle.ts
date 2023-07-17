@@ -1,14 +1,6 @@
-import { Creature, Family } from "./creature";
+import { Creature } from "./creature";
 
 const SUPER_EFFECTIVE_MULTIPLIER = 1.5;
-
-// Map of attacker -> families it is super effective against
-const SUPER_EFFECTIVE_MAP: Record<Family, Family[]> = {
-  [Family.Flyer]: [Family.Runner, Family.Swimmer],
-  [Family.Swimmer]: [Family.Climber],
-  [Family.Runner]: [Family.Swimmer],
-  [Family.Climber]: [Family.Flyer],
-};
 
 export function battle(a: Creature, b: Creature): Creature {
   let firstTurnOrder: [Creature, Creature] =
@@ -28,10 +20,7 @@ function battleTurn(attacker: Creature, defender: Creature): Creature {
 }
 
 function getDamage(attacker: Creature, defender: Creature): number {
-  if (
-    SUPER_EFFECTIVE_MAP[attacker.family] &&
-    SUPER_EFFECTIVE_MAP[attacker.family].includes(defender.family)
-  ) {
+  if (attacker.isSuperEffectiveAgainst(defender.family)) {
     return attacker.cp * SUPER_EFFECTIVE_MULTIPLIER;
   }
 

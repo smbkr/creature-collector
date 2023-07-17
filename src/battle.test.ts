@@ -3,49 +3,60 @@ import { Creature, Family, Species } from "./creature";
 
 describe("battle", () => {
   it("returns the winning creature", () => {
-    const strongCreature: Creature = {
+    const strongCreature = new Creature({
       position: { x: 0, y: 0 },
       family: Family.Flyer,
       species: Species.Bird,
       hp: 100,
       cp: 25,
-    };
+    });
 
-    const weakCreature: Creature = {
+    const weakCreature = new Creature({
       position: { x: 0, y: 0 },
       family: Family.Flyer,
       species: Species.Bird,
       hp: 100,
       cp: 10,
-    };
+    });
 
-    const result = battle(strongCreature, weakCreature);
+    const winner = battle(strongCreature, weakCreature);
 
-    expect(result).toEqual(strongCreature);
+    expect(winner).toEqual(strongCreature);
   });
 
   describe("when one creature is super-effective against the other", () => {
-    it("does more damage", () => {
-      // Flyer is super-effective vs. runner
-      const runner: Creature = {
-        position: { x: 0, y: 0 },
-        family: Family.Runner,
-        species: Species.Bird,
-        hp: 100,
-        cp: 10,
-      };
+    const testCases: [Family, Family][] = [
+      [Family.Flyer, Family.Runner],
+      [Family.Flyer, Family.Swimmer],
+      [Family.Runner, Family.Swimmer],
+      [Family.Climber, Family.Flyer],
+      [Family.Amphibian, Family.Climber],
+      [Family.Amphibian, Family.Runner],
+      [Family.Amphibian, Family.Flyer],
+      [Family.Amphibian, Family.Swimmer],
+    ];
 
-      const flyer: Creature = {
+    it.each(testCases)("%s should beat %s", (strongFamily, weakFamily) => {
+      // Creature from strong family has worse base stats
+      const strongCreature = new Creature({
         position: { x: 0, y: 0 },
-        family: Family.Flyer,
+        family: strongFamily,
         species: Species.Bird,
         hp: 80,
         cp: 10,
-      };
+      });
 
-      const result = battle(runner, flyer);
+      const weakCreature = new Creature({
+        position: { x: 0, y: 0 },
+        family: weakFamily,
+        species: Species.Bird,
+        hp: 100,
+        cp: 10,
+      });
 
-      expect(result).toEqual(flyer);
+      const winner = battle(strongCreature, weakCreature);
+
+      expect(winner).toEqual(strongCreature);
     });
   });
 });
