@@ -22,4 +22,6 @@ export interface Creature {
   position: Position;
   family: Family;
   species: Species;
+  hp: number;
+  cp: number;
 }

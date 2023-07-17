@@ -13,12 +13,16 @@ describe("world", () => {
         position: { x: 4, y: 2 },
         species: Species.Bird,
         family: Family.Flyer,
+        hp: 1,
+        cp: 1,
       };
 
       const creatureFar: Creature = {
         position: { x: 12, y: 37 },
         species: Species.Butterfly,
         family: Family.Flyer,
+        hp: 1,
+        cp: 1,
       };
 
       const world: World = {
