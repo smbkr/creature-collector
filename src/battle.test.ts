@@ -15,7 +15,7 @@ describe("battle", () => {
       position: { x: 0, y: 0 },
       family: Family.Flyer,
       species: Species.Bird,
-      hp: 50,
+      hp: 100,
       cp: 10,
     };
 
@@ -25,6 +25,27 @@ describe("battle", () => {
   });
 
   describe("when one creature is super-effective against the other", () => {
-    it.todo("uses a damage multiplier");
+    it("does more damage", () => {
+      // Flyer is super-effective vs. runner
+      const runner: Creature = {
+        position: { x: 0, y: 0 },
+        family: Family.Runner,
+        species: Species.Bird,
+        hp: 100,
+        cp: 10,
+      };
+
+      const flyer: Creature = {
+        position: { x: 0, y: 0 },
+        family: Family.Flyer,
+        species: Species.Bird,
+        hp: 80,
+        cp: 10,
+      };
+
+      const result = battle(runner, flyer);
+
+      expect(result).toEqual(flyer);
+    });
   });
 });
